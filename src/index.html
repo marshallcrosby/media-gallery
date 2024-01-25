@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/media-gallery.css">
+</head>
+<body>
+    <div class="container py-5">
+        <h1>Media Gallery</h1>
+        <p>Display media in a bootstrap modal in a swiper slider</p>
+        
+        <h2>Displays</h2>
+        
+        <ul>
+            <li>Images</li>
+            <li>Youtube Videos</li>
+            <li>Vimeo Videos</li>
+            <li>HTML5 Videos</li>
+        </ul>
+
+        <h2>Features</h2>
+        <ul>
+            <li>Utilizes the YouTube or Vimeo API for video rendering, enabling the video players to pause when not in view without the need to replace the embedded player's iframe src. This avoids the unnecessary re-downloading of player assets upon display.</li>
+            <li>Automatically retrieves the video ID from a YouTube or Vimeo URL and associates it with the player.</li>
+            <li>Opens either a singular media element or a group of elements. In the case of a group, the media will be presented in a Swiper carousel.</li>
+            <li>Detects the necessity of YouTube API, Vimeo API, or Swiper.js scripts and imports them automatically if required.</li>
+        </ul>
+
+        <h2>Requirements</h2>
+        <ul>
+            <li>Bootstrap</li>
+        </ul>
+
+        <style>
+            .media-gallery {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .media-gallery__media {
+                max-width: 200px;
+                height: auto;
+            }
+        </style>
+
+        <br>
+
+        <div data-view-markup="title: Media Gallery Markup; render-in-page: true;">
+            <div class="media-gallery">
+                <div class="media-gallery__item" data-bs-toggle="modal" data-bs-target="#mediaModal" data-video-src="https://www.youtube.com/embed/KJwYBJMSbPI">
+                    <img class="media-gallery__media" src="https://picsum.photos/1280/720?v1" width="1280" height="720" alt="Placeholder text for slide 1">
+                </div>
+                <div class="media-gallery__item" data-bs-toggle="modal" data-bs-target="#mediaModal" data-video-src="https://player.vimeo.com/226053498">
+                    <img class="media-gallery__media" src="https://picsum.photos/1280/720?v2" width="1280" height="720" alt="Placeholder text for slide 2">
+                </div>
+                <div class="media-gallery__item" data-bs-toggle="modal" data-bs-target="#mediaModal">
+                    <img class="media-gallery__media" src="https://picsum.photos/1280/720?v3" width="1280" height="720" alt="Placeholder text for slide 3">
+                </div>
+                <div class="media-gallery__item" data-bs-toggle="modal" data-bs-target="#mediaModal">
+                    <img class="media-gallery__media" src="https://picsum.photos/1280/720?v5" width="1280" height="720" alt="Placeholder text for slide 5">
+                </div>
+                <div class="media-gallery__item" data-bs-toggle="modal" data-bs-target="#mediaModal" data-video-src="https://www.w3schools.com/html/mov_bbb.mp4">
+                    <img class="media-gallery__media" src="https://picsum.photos/1280/720?v6" width="1280" height="720" alt="Placeholder text for slide 4">
+                </div>
+                <div class="media-gallery__item" data-bs-toggle="modal" data-bs-target="#mediaModal">
+                    <img class="media-gallery__media" src="https://picsum.photos/1280/720?v7" width="1280" height="720" alt="Placeholder text for slide 6">
+                </div>
+            </div>
+    
+            <!-- Media modal should only be rendered once -->
+            <div class="modal modal--media" id="mediaModal" tabindex="-1" aria-labelledby="mediaModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="mediaModalLabel">Viewing media</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+        
+                        <div class="modal-body">
+                            <div class="media-viewer">
+                                <div class="media-viewer__swiper swiper">
+                                    
+                                    <!-- Slides added via js -->
+                                    <div class="media-viewer__wrapper swiper-wrapper">
+                                    </div>
+                                    
+                                    <div class="media-viewer__button-controls">
+                                        <div class="media-viewer__button-prev swiper-button-prev"></div>
+                                        <span class="media-viewer__slide-status"></span>
+                                        <div class="media-viewer__button-next swiper-button-next"></div>
+                                    </div>
+                                </div>
+        
+                                <div class="bar-loader">
+                                    <div class="bar-loader__track"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    
+    <script src="https://cdn.jsdelivr.net/gh/marshallcrosby/view-markup@1.7.0/dist/js/view-markup.min.js?modal-nav&exclude-attribute=data-jtn-anchor" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="js/media-gallery.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            mediaGallery();
+        })
+    </script>
+</body>
+</html>
