@@ -135,8 +135,11 @@ const mediaGallery = () => {
     if (needYTApi) {
         loadStatusCount = 1;
     }
+
+    let mediaReadyEvent = new Event('mediaReadyEvent');
     
     // FUNCTION DEF: Build vimeo video instance
+    let vimeoLoaded = 0;
     const vimeoBuilderAPI = (el, idstring) => {
         const uniqeuID = 'vimeoPlayer' + Math.floor(Math.random() * 1000000000);
         el.setAttribute('id', uniqeuID);
@@ -148,6 +151,7 @@ const mediaGallery = () => {
     
         // Pause video on swiper slide change
         player.on('loaded', () => {
+            console.log(vimeoLoaded);
             mediaViewerEl.swiper.on('slideChange', () => {
                 player.pause();
             });
@@ -155,10 +159,18 @@ const mediaGallery = () => {
             window.addEventListener('mediaModalClosedEvent', () => {
                 player.pause();
             });
+
+            const activeSlide = el.closest('.swiper-slide-active');
+            if (vimeoLoaded === 0 && activeSlide) {
+                window.dispatchEvent(mediaReadyEvent);
+            }
+            
+            vimeoLoaded++
         });
     }
     
     // FUNCTION DEF: Build youtube video instance
+    let youtubeLoaded = 0;
     const youtubeVideoBuilderAPI = (el, idstring) => {
         const uniqeuID = 'ytPlayer' + Math.floor(Math.random() * 1000000000);
         el.setAttribute('id', uniqeuID);
@@ -189,10 +201,19 @@ const mediaGallery = () => {
             window.addEventListener('mediaModalClosedEvent', () => {
                 player.pauseVideo();
             });
+
+            const activeSlide = el.closest('.swiper-slide-active');
+            if (youtubeLoaded === 0 && activeSlide) {
+                console.log('found');
+                window.dispatchEvent(mediaReadyEvent);
+            }
+
+            youtubeLoaded++
         }
     }
     
     // FUNCTION DEF: Build HTML5 video instance
+    let html5VideoReady = 0;
     const html5VideoBuilder = (el, src, posterSrc) => {
         const uniqeuID = 'html5VideoPlayer' + Math.floor(Math.random() * 1000000000);
         el.classList.add('html5-video-player');
@@ -215,6 +236,13 @@ const mediaGallery = () => {
             window.addEventListener('mediaModalClosedEvent', () => {
                 el.pause();
             });
+
+            const activeSlide = el.closest('.swiper-slide-active');
+            if (html5VideoReady === 0 && activeSlide) {
+                window.dispatchEvent(mediaReadyEvent);
+            }
+
+            html5VideoReady++
         })
     }
     
@@ -331,6 +359,12 @@ const mediaGallery = () => {
                 beforeModalFocusItem = item;
 
                 currentGroup = group.getAttribute('data-group-id');
+
+                const activeImage = mediaViewerEl.querySelector('.swiper-slide-active img');
+                
+                if (activeImage) {
+                    window.dispatchEvent(mediaReadyEvent)
+                }
             });
     
             // Allow the enter key and spacebar to trigger the media modal (like a <button> element would)
@@ -354,6 +388,10 @@ const mediaGallery = () => {
         setTimeout(() => {
             barLoaderEl.classList.add('bar-loader--hidden');
         }, 1000);
+
+        window.addEventListener('mediaReadyEvent', () => {
+            console.log('loading done');
+        });
     });
 
     // When media modal is closed do some stuff
@@ -369,15 +407,15 @@ const mediaGallery = () => {
     });
     
     // Figure out when the all the media items are ready
-    function galleryLoaded() {
+    function mediaGalleryReady() {
         if (loadStatus === loadStatusCount) {
             document.documentElement.classList.add('js-media-gallery--ready');
             return
         }
         
-        setTimeout(galleryLoaded, 300);
+        setTimeout(mediaGalleryReady, 300);
     }
     
-    galleryLoaded();
+    mediaGalleryReady();
 }
 //# sourceMappingURL=media-gallery.js.map
